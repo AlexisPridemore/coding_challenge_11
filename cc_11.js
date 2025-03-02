@@ -52,19 +52,43 @@ console.log(borrower1.borrowedBooks);
 // Task 3: Creating a Library Class
 
 class Library {
-    constructor() {  //Library class to track multiple books
+    constructor() {  //Library class to track multiple books and borrowers
         this.books = [];
+        this.borrowers = [];
     }
     addBook(book) {  //Adds a new book to the library
         this.books.push(book);
     }
+    addBorrower(borrower) {
+        this.borrowers.push(borrower);
+    }
+    lendBook(borrowerId, isbn) {  //check is book exists and has available copies
+        const book = this.books.find(b => b.isbn === isbn);
+        const borrower = this.borrowers.find(b => b.borrowerId === borrowerId);
+        if (book && borrower && book.copies > 0) {
+            book.updateCopies(-1);   //reduces book copies by 1
+            borrower.borrowBook(book.title);
+        } else {
+            console.log('Book is unavailable or borrower does not exist');
+        }  //updates the borrower's books list
+    }
+
     listBooks() {  //Logs all books' details
         this.books.forEach((book) => {
-            console.log(`Title: ${book.title}, Author: ${book.author}, ISBN: ${book.isbn}, Copies: ${book.copies}`);
+            console.log(book.getDetails());
         });
     }
+
 }
 
 const library = new Library();  //Test Data
 library.addBook(book1);         //Test Data
 library.listBooks();            //Test Data
+
+// Task 4: Implementing Book Borrowing
+
+library.lendBook(201, 123456);  //Test Data Cases
+console.log(book1.getDetails());  //Test Data Cases
+
+console.log(borrower1.borrowedBooks);  //Test Data Cases
+
