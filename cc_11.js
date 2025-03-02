@@ -12,10 +12,6 @@ class Book {  //class to represent books in the library
     }
     updateCopies(quantity) {  //modifies the available copies when a book is borrowed or returned
         this.copies += quantity;
-        if (this.copies < 0) {
-          this.copies = 0;
-          console.log("Not enough copies available. Setting to 0.");
-        }
     }
 };
 
@@ -62,15 +58,25 @@ class Library {
     addBorrower(borrower) {
         this.borrowers.push(borrower);
     }
-    lendBook(borrowerId, isbn) {  //check is book exists and has available copies
-        const book = this.books.find(b => b.isbn === isbn);
-        const borrower = this.borrowers.find(b => b.borrowerId === borrowerId);
+
+    // Task 4 Addition:
+    lendBook(borrowerId, isbn) {  //check if book exists and has available copies
+        const book = this.books.find(book => book.isbn === isbn);
+        const borrower = this.borrowers.find(borrower => borrower.borrowerId === borrowerId);
         if (book && borrower && book.copies > 0) {
             book.updateCopies(-1);   //reduces book copies by 1
             borrower.borrowBook(book.title);
-        } else {
-            console.log('Book is unavailable or borrower does not exist');
-        }  //updates the borrower's books list
+        };  //updates the borrower's books list
+    }
+
+    // Task 5 addition:
+    returnBook(borrowerId, isbn) {  //when borrowers return books
+        const book = this.books.find(book => book.isbn === isbn);
+        const borrower = this.borrowers.find(borrower => borrower.borrowerId === borrowerId);
+        if (book && borrower) {
+            book.updateCopies(1);  //Increases the book's available copies
+            borrower.returnBook(book.title); //removes the book from borrowed list
+        };
     }
 
     listBooks() {  //Logs all books' details
@@ -91,4 +97,11 @@ library.lendBook(201, 123456);  //Test Data Cases
 console.log(book1.getDetails());  //Test Data Cases
 
 console.log(borrower1.borrowedBooks);  //Test Data Cases
+
+// Task 5: Implementing Book Returns
+
+library.returnBook(201, 123456);  //Test Data
+console.log(book1.getDetails());  //Test Data Log
+
+console.log(borrower1.borrowedBooks);  //Test Data Log
 
