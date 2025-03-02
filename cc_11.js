@@ -59,25 +59,38 @@ class Library {
         this.borrowers.push(borrower);
     }
 
+
     // Task 4 Addition:
+
+    addBorrower(borrower) {
+        this.borrowers.push(borrower);  //adds a borrower to borrower array
+    }
     lendBook(borrowerId, isbn) {  //check if book exists and has available copies
         const book = this.books.find(book => book.isbn === isbn);
         const borrower = this.borrowers.find(borrower => borrower.borrowerId === borrowerId);
-        if (book && borrower && book.copies > 0) {
+        if (book && borrower) {
+        if (book.copies > 0) {
             book.updateCopies(-1);   //reduces book copies by 1
             borrower.borrowBook(book.title);
-        };  //updates the borrower's books list
+        } //borrows the book that is selected
+        else {
+            this.console.log("No Copies of this book are available")
+        };
+
     }
+}
 
     // Task 5 addition:
     returnBook(borrowerId, isbn) {  //when borrowers return books
         const book = this.books.find(book => book.isbn === isbn);
         const borrower = this.borrowers.find(borrower => borrower.borrowerId === borrowerId);
-        if (book && borrower) {
+        if (book) {
             book.updateCopies(1);  //Increases the book's available copies
-            borrower.returnBook(book.title); //removes the book from borrowed list
-        };
+            if (borrower){
+                borrower.returnBook(book.title); //removes the book from borrowed list
+        }
     }
+}
 
     listBooks() {  //Logs all books' details
         this.books.forEach((book) => {
@@ -93,6 +106,7 @@ library.listBooks();            //Test Data
 
 // Task 4: Implementing Book Borrowing
 
+library.addBorrower(borrower1)
 library.lendBook(201, 123456);  //Test Data Cases
 console.log(book1.getDetails());  //Test Data Cases
 
