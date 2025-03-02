@@ -23,3 +23,28 @@ const book1 = new Book("The Great Gatsby", "F. Scott Fitzgerald", 123456, 5);
 console.log(book1.getDetails());  //Log Test Data
 book1.updateCopies(-1);
 console.log(book1.getDetails());  //Log Test Data
+
+// Task 2: Creating a Borrower Class
+
+class Borrower {  //class to track borrowed books
+    constructor(name, borrowerId) {
+        this.name = name;
+        this.borrowerId = borrowerId;
+        this.borrowedBooks = [];
+    }
+    borrowBook(book) {  //adds a book title to Borrowed Books
+        this.borrowedBooks.push(book);
+    }
+    returnBook(book) {  //removes the book from Borrowed Books
+        const index = this.borrowedBooks.indexOf(book);
+        if (index !== -1) {
+            this.borrowedBooks.splice(index, 1);
+        }
+    }
+};
+
+const borrower1 = new Borrower("Alice Johnson", 201);
+borrower1.borrowBook("The Great Gatsby");
+console.log(borrower1.borrowedBooks);
+borrower1.returnBook("The Great Gatsby");
+console.log(borrower1.borrowedBooks);
